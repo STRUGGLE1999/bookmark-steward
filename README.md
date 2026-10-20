@@ -37,11 +37,11 @@ Chrome 原生星标和 `⌘D`/`Ctrl+D` 仍打开原生弹窗。使用上述扩�
 
 ```dotenv
 API_KEY=填入你自己的密钥
-BASE_URL=https://api.aicodemirror.ai
-MODEL=gpt-6-astra
+BASE_URL=https://your-provider.example
+MODEL=YOUR_MODEL_NAME
 ```
 
-以上地址和模型只是第三方兼容接口的示例，不是内置服务，也不保证持续可用；请以你选择的服务商实际支持情况为准。不要把密钥交给不信任的服务商。
+以上三项均需按每个人自己的服务商和账户填写：API_KEY 是自己的密钥，BASE_URL 是服务商提供的 API 根地址，MODEL 是该服务商支持的模型名称。示例域名和模型名只是占位符，不能直接调用。不要把密钥交给不信任的服务商。
 
 3. 在智能收藏弹窗展开“AI 配置 · 仅当前浏览器会话”，选择自己的 `model.local.env`。
 4. 勾选发送信息同意项，点击“启用 AI 并重新推荐”；Chrome 请求访问该服务商域名时确认授权。
