@@ -17,7 +17,7 @@
     "type": "module"
   },
   "action": {
-    "default_title": "智能收藏 · 先确认去向",
+    "default_title": "书签归位 - AI 整理书签，收藏自动选文件夹",
     "default_popup": "popup.html",
     "default_icon": {
       "16": "icons/icon-16.png",
