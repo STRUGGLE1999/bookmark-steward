@@ -1,0 +1,75 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>产品调研 · 书签归位</title><link rel="stylesheet" href="styles.css"></head><body><article class="doc"><a href="./">← 回到工具</a><h1>书签归位：产品调研与首版方案</h1>
+
+<p>调研日期：2026-10-20。样本为可核实官方产品、商店页面；人数及评分是网页抓取快照，不代表全市场排名、付费人数或留存。尚未访谈外部用户，商业判断是待验证假设。</p>
+
+<h2>结论</h2>
+
+<p>已有成熟收藏平台，也已有直接操作Chrome原生书签的AI扩展。不能把“AI自动分类”当作原创卖点。本工具定位为：面向资料横跨技术、产品、客户项目与学习的中文知识工作者，对现有书签栏做可解释、可撤销的整理，并维护新收藏的归位。不要求迁移收藏库，不构建另一个内容平台。</p>
+
+<h2>竞品比较</h2>
+
+<p>| 产品 | 证据及用户规模信号 | 主要做法 | 借鉴与取舍 |</p>
+<p>| --- | --- | --- | --- |</p>
+<p>| Raindrop.io | 官方提供免费与Pro；Stella Beta在Pro网页端提供。官网称全体用户保存接近十亿书签，不等同于用户人数 | 云端收藏库、集合和标签、全文搜索、语义问答；Stella提出整理方案由人审核 | 学习先建议再确认；首版只整理原生书签，不做云端收藏迁移 |</p>
+<p>| Tabme | Chrome商店9,000用户、4.5分/73评分快照 | 可视化看板、拖放、标签、工作空间、标签页会话；免费无限书签、1空间、2标签；付费提供更多空间、标签与同步 | 学习视觉预览与按项目组织；不替换新标签页、不造同步系统 |</p>
+<p>| Bookmarkify | Chrome商店2,000用户、4.7分/31评分快照 | 面向设计师的视觉收藏、标签、资产与协作、设计分析 | 面向特定人群比通用收藏更清晰；本工具聚焦分类和找回，不做截图素材库 |</p>
+<p>| MarkMind | Chrome商店951用户、4.9分/35评分快照 | 自带API Key，多模型；分析当前页面或批量书签，优先使用已有目录，先审核再移动 | 复用已有结构、自备Key、少后端；自动归类默认关闭，有记录与撤销 |</p>
+<p>| AI Bookmark Organizer（Graftware） | Chrome商店172用户快照 | 两阶段统一目录再分类，原生书签和HTML、可选目录粒度、本地模式、自带Key | 两阶段避免每批生成不同类别；说明本产品不是第一个提供这套能力的工具 |</p>
+<p>| Neat AI Bookmark Manager | 官方称支持批量分类、自动新收藏归类、备份恢复；“thousands”是其营销表述，本次未核实商店人数 | 大批量整理加实时维护，自动备份 | 新收藏归位是明确已有需求；不据此声称同类没有这一能力 |</p>
+
+<h2>用户问题与需求</h2>
+
+<p>本次真实整理案例包含297条书签、60个文件夹。问题不是简单的相同URL重复，而是：目录按年份、角色、工具混用；“PPT生成”下放搜索服务，“VPN”下放格式转换；教程、后台控制台、私人项目文档与工具首页混杂。经过人工判断，归为7顶层、30子类，即37个目录，全部链接保留。这是单个种子案例，不是通用分类准确率证据。</p>
+
+<p>首版优先：①用途分类；②最多两层；③每条显示原位置、建议位置、理由、待确认状态；④可编辑目录；⑤完整性校验；⑥原始HTML备份；⑦扩展移动原书签及撤销；⑧新收藏自动分类。保留全部URL，重复链接仅提示，不把同一网站不同项目或不同页面当作重复删除。</p>
+
+<h2>差异化与亮点</h2>
+
+<p>- “整理决策”可检查：既看到新结构，也看到具体每条为什么移动；不确定就待确认，不伪装理解私人文档。</p>
+<p>- 直接维护Chrome原生书签：继续使用浏览器与Chrome同步，工具不保存云端收藏库。</p>
+<p>- 三种使用成本：本地规则；自带OpenAI兼容Key直连；复制提示词交给已有AI，再粘回校验过的JSON。</p>
+<p>- 新收藏维护：选择书签栏，默认本地规则，优先复用已有目录，记录最近20次；可选AI会话，Key不永久保存。</p>
+<p>- 面向中文技术、产品、政企方案工作：区别学习文章、可用工具、业务入口；这来自种子用户背景，仍需更多用户验证。</p>
+
+<p>这些是产品组合与体验侧重，不是已证实的技术壁垒，也不应宣称竞品均不具备。</p>
+
+<h2>如何让别人使用</h2>
+
+<p>1. 网页入口：浏览器导出HTML → 本地解析 → 预览修改 → 导出 → 导入浏览器。零安装门槛，但Chrome导入会新增而非覆盖目录，需要核对后清理旧目录。</p>
+<p>2. 扩展入口：ZIP解压 → chrome://extensions 开发者模式 → 加载解压目录。通过Chrome官方bookmarks API读取、创建目录和移动书签；onCreated监听新收藏。网页不能直接访问chrome.bookmarks。</p>
+<p>3. Chrome Web Store是大众分发与自动更新的合适长期方案，但开发者注册需一次性费用；首版不支付、不上架。不能把免费的开发者模式安装包装为商店一键安装。</p>
+<p>4. 用户现已决定先私有部署。其他人暂时不能访问私有网站；可以把扩展ZIP文件单独给试用者，每个人在自己Chrome中运行、自己配置模型Key。未来用户明确要求开放时，再改为公开站点或上架商店。</p>
+
+<h2>零额外开销架构</h2>
+
+<p>静态HTML/CSS/ES Modules，无npm生产依赖、数据库、服务器代理、付费域名、图片服务或分析SDK。网站部署到现有Sites托管；本次不创建付费资源或订阅。模型请求由使用者自己的浏览器/扩展直接发给其服务商，本站不会承担访客模型费用。免费托管不是无限服务或永久商业承诺；若未来托管规则变化或需要公开大规模分发，应重新核查计划。</p>
+
+<p>API Key不内置、不提交源码，批量Key仅页面内存；自动归类Key用Chrome session存储，关闭浏览器后清空。服务商需支持OpenAI chat/completions格式；网页直连受CORS约束，扩展通过用户按需授予服务商域名权限。无需读取Cookie、历史或网页正文，也无需让模型模拟点击屏幕。</p>
+
+<h2>业务可行性与验证</h2>
+
+<p>一次性批量整理属于低频需求，做订阅不一定自然；自动新增归类提供持续价值。早期先做免费自备Key的实用工具及个人产品作品，获得5–10位目标用户的真实试用后，再决定收费。暂不接支付、不做增长埋点。</p>
+
+<p>建议人工记录：首次从导入到导出的完成率；用户是否愿意应用方案；无需修改就接受的分类比例；整理前后各找5个指定书签的耗时；误移动/撤销次数；一周内新增收藏的归类留用比例；单次token与API成本。文件夹减少不是唯一指标，过度合并同样会难找。</p>
+
+<p>首批用户：技术转产品、售前方案/项目负责人、研究学习资料较多的人。渠道可用演示、开发者社区、产品学习社群，但本项目未自动向任何人发送或发布推广信息。</p>
+
+<h2>首版边界</h2>
+
+<p>没有云同步账户、付费系统、网页正文抓取、失效链接自动删除、后台批量定时重构或向量语义搜索。自动归类仅监听扩展运行且开启后的Chrome新增书签事件；不保证所有外部导入、移动设备同步行为一致。服务worker重启和浏览器同步的真实联调仍需专用测试环境。没有配置用户API Key，不能声称已通过真实付费模型调用验证。</p>
+
+<h2>官方来源</h2>
+
+<p>- Raindrop定价：<a href="https://raindrop.io/pro/buy" rel="noreferrer">https://raindrop.io/pro/buy</a></p>
+<p>- Stella：<a href="https://blog.raindrop.io/meet-stella-your-ai-powered-second-brain-b34482fb003f/" rel="noreferrer">https://blog.raindrop.io/meet-stella-your-ai-powered-second-brain-b34482fb003f/</a></p>
+<p>- Tabme商店：<a href="https://chromewebstore.google.com/detail/tabme-%E2%80%94-tab-bookmark-mana/jnhiookaaldadiimlgncedhkpmhlmmip" rel="noreferrer">https://chromewebstore.google.com/detail/tabme-%E2%80%94-tab-bookmark-mana/jnhiookaaldadiimlgncedhkpmhlmmip</a></p>
+<p>- Tabme定价：<a href="https://gettabme.com/pricing.html" rel="noreferrer">https://gettabme.com/pricing.html</a></p>
+<p>- Bookmarkify：<a href="https://chromewebstore.google.com/detail/bookmarkify-bookmark-mana/jhdfocdnjmedjmjpfobaaecfkajecffb" rel="noreferrer">https://chromewebstore.google.com/detail/bookmarkify-bookmark-mana/jhdfocdnjmedjmjpfobaaecfkajecffb</a></p>
+<p>- MarkMind：<a href="https://chromewebstore.google.com/detail/markmind/bdobgdkpeffdbonfpokgkbncgnbnjnoo" rel="noreferrer">https://chromewebstore.google.com/detail/markmind/bdobgdkpeffdbonfpokgkbncgnbnjnoo</a></p>
+<p>- AI Bookmark Organizer：<a href="https://chromewebstore.google.com/detail/ai-bookmark-organizer/llecagebbdpfhenhmogbihiojnbjdmmf" rel="noreferrer">https://chromewebstore.google.com/detail/ai-bookmark-organizer/llecagebbdpfhenhmogbihiojnbjdmmf</a></p>
+<p>- Neat：<a href="https://aibookmarkmanager.com/" rel="noreferrer">https://aibookmarkmanager.com/</a></p>
+<p>- 官方书签API：<a href="https://developer.chrome.com/docs/extensions/reference/api/bookmarks" rel="noreferrer">https://developer.chrome.com/docs/extensions/reference/api/bookmarks</a></p>
+<p>- 扩展开发者模式：<a href="https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world" rel="noreferrer">https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world</a></p>
+<p>- 商店开发者注册：<a href="https://developer.chrome.com/docs/webstore/register/" rel="noreferrer">https://developer.chrome.com/docs/webstore/register/</a></p>
+<p>- 扩展跨域权限：<a href="https://developer.chrome.com/docs/extensions/develop/concepts/network-requests" rel="noreferrer">https://developer.chrome.com/docs/extensions/develop/concepts/network-requests</a></p>
+</article></body></html>

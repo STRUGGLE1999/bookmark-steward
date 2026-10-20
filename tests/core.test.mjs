@@ -1,0 +1,11 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {suggestLocal, sanitizeForAI, validatePlan, summarize, exportHTML} from '../dist/core.js';
+const rows=[{id:'1',title:'秘塔AI搜索',url:'https://metaso.cn/',path:['工具','PPT生成']},{id:'2',title:'MP4 to GIF',url:'https://convertio.co/mp4-gif/',path:['VPN']},{id:'3',title:'客户需求',url:'http://192.168.2.25/asr-home?token=secret',path:['项目']},{id:'4',title:'未知文档',url:'https://team.feishu.cn/wiki/secret',path:['学习']}];
+test('实际用途优先：搜索不放PPT，转换不放VPN',()=>{const p=suggestLocal(rows);assert.match(p[0].destination.join('/'),/对话|搜索/);assert.match(p[1].destination.join('/'),/格式|办公/);assert.match(p[2].destination.join('/'),/工作/);});
+test('AI输入排除内网及私人文档并去掉参数路径',()=>{const r=sanitizeForAI(rows);assert.deepEqual(r.map(x=>x.id),['1','2']);assert.equal(r[0].url,'https://metaso.cn');assert.ok(!JSON.stringify(r).includes('secret'));});
+test('方案拒绝遗漏、重复ID和过深目录',()=>{assert.throws(()=>validatePlan(rows,[{id:'1',destination:['a']}]));const p=suggestLocal(rows);assert.throws(()=>validatePlan(rows,[...p,p[0]]));assert.throws(()=>validatePlan(rows,p.map(x=>({...x,destination:['a','b','c']}))));});
+test('完全相同的网址只提示，不擅自删除',()=>{const r=[rows[0],{...rows[0],id:'5'}];const p=suggestLocal(r);assert.equal(p.length,2);assert.equal(summarize(r,p).duplicates,1);});
+test('导出保留全部网址并转义HTML',()=>{const r=[{id:'x',title:'<script>alert(1)</script>',url:'https://a.test/?a=1&b=2',path:[]}];const h=exportHTML(r,suggestLocal(r));assert.match(h,/&lt;script&gt;/);assert.match(h,/a=1&amp;b=2/);assert.equal((h.match(/<A /g)||[]).length,1);});
+test('本地方案是完整有理由的分类而非静默AI',()=>{const p=suggestLocal(rows);assert.equal(validatePlan(rows,p),true);assert.ok(p.every(x=>x.reason&&x.source==='local'));assert.equal(p.at(-1).confidence,'low');});
+test('Notion主域名与www/其他子域私人页面都不发送',()=>{assert.deepEqual(sanitizeForAI([{id:'a',title:'隐私',url:'https://www.notion.so/private'},{id:'b',title:'隐私',url:'https://team.notion.so/private'}]),[]);});

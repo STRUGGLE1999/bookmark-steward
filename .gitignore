@@ -1,0 +1,12 @@
+.DS_Store
+node_modules/
+.env
+.env.*
+*.env
+!config.example.env
+*.local.*
+*.log
+*.har
+.openai/
+backups/
+screenshots/
